@@ -1,5 +1,6 @@
 #!name=YouTube
 #!desc=YouTube videos removes ads. v20201226.01
+#!url=https://raw.githubusercontent.com/zhangyongcun/install/main/macos/Surge-Module/YouTube.sgmodule
 
 [Rule]
 URL-REGEX,https?:\/\/.+.googlevideo.com\/ptracking\?pltype=adhost,REJECT
