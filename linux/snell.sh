@@ -57,4 +57,4 @@ fi
 
 echo  "================Install Complete ========="
 echo "Client Config"
-echo "proxy = snell, ${ipc}, 6500, psk=${PSK}, obfs=tls, version=2, tfo=true"
+echo "proxy = snell, ${ipc}, 7500, psk=${PSK}, obfs=tls, version=2, tfo=true"
