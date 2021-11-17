@@ -16,6 +16,12 @@ bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/li
 bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/nps.sh)
 ```
 
+### Wireguard
+
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wireguard.sh)
+```
+
 ## MacOS
 
 ## Windows
