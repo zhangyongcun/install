@@ -22,6 +22,11 @@ bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/li
 bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wireguard.sh)
 ```
 
+### x-ui
+```
+bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
+```
+
 ## MacOS
 
 ## Windows
