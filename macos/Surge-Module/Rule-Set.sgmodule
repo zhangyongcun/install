@@ -1,8 +1,0 @@
-#!name=RULE-SET
-#!desc=常用规则集
-
-[Rule]
-# 广告屏蔽
-RULE-SET,https://raw.githubusercontent.com/zhangyongcun/install/main/macos/Surge-Module/RULE-SET/Reject.list
-# 规则集
-RULE-SET,https://raw.githubusercontent.com/zhangyongcun/install/main/macos/Surge-Module/RULE-SET/Proxy.list,Proxy
