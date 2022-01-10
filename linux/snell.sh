@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-VERSION="v2.0.4"
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+VERSION="v3.0.0"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
+apt-get update
 apt-get install unzip -y
 cd ~/
 wget --no-check-certificate -O snell.zip https://github.com/surge-networks/snell/releases/download/v2.0.4/snell-server-"$VERSION"-linux-amd64.zip
@@ -57,4 +62,4 @@ fi
 
 echo  "================Install Complete ========="
 echo "Client Config"
-echo "proxy = snell, ${ipc}, 7500, psk=${PSK}, obfs=tls, version=2, tfo=true"
+echo "proxy = ${HOSTNAME}, ${ipc}, 7500, psk=${PSK}, obfs=tls, version=2, tfo=true"
