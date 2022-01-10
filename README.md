@@ -78,3 +78,11 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 | golang                 | go sdk                 |
 | ascp                   | aspera download client |
 
+[ZSH](https://ohmyz.sh/)
+
+```shell
+# install oh my zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+```
+
