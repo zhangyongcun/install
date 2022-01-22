@@ -5,13 +5,13 @@ if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
-VERSION="v3.0.0"
+VERSION="v3.0.1"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
 apt-get update
 apt-get install unzip -y
 cd ~/
-wget --no-check-certificate -O snell.zip https://github.com/surge-networks/snell/releases/download/v2.0.4/snell-server-"$VERSION"-linux-amd64.zip
+wget --no-check-certificate -O snell.zip https://github.com/surge-networks/snell/releases/download/"$VERSION"/snell-server-"$VERSION"-linux-amd64.zip
 unzip -o snell.zip
 rm -f snell.zip
 chmod +x snell-server

@@ -6,7 +6,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 # download
-wget --no-check-certificate -O snell.zip https://github.com/surge-networks/snell/releases/download/v3.0.0/snell-server-v3.0.0-linux-amd64.zip
+VERSION="v3.0.1"
+wget --no-check-certificate -O snell.zip https://github.com/surge-networks/snell/releases/download/"$VERSION"/snell-server-"$VERSION"-linux-amd64.zip
 unzip -o snell.zip
 rm -f snell.zip
 systemctl stop snell.service
