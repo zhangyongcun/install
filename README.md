@@ -77,6 +77,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 | neovim                 | vim                    |
 | golang                 | go sdk                 |
 | ascp                   | aspera download client |
+| tldr                   | 帮助文档               |
 
 [ZSH](https://ohmyz.sh/)
 
