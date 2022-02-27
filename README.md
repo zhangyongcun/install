@@ -27,6 +27,14 @@ bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/li
 bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 ```
 
+### aspera-cli
+
+```shell
+bash <(curl -Ls https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ibm-aspera-cli-3.9.6.1467.159c5b1-linux-64-release.sh)
+```
+
+
+
 ## MacOS
 
 ### 软件
