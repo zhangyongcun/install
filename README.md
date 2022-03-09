@@ -60,7 +60,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/zhangyongcun/install/main/linu
 | [Blackmagic Disk Speed](https://apps.apple.com/cn/app/blackmagic-disk-speed-test/id425264550?mt=12) | 硬盘测速           | 免费, 工具       |                   |
 | [Remote Desktop](https://apps.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12) | RPC 远程桌面       | 免费, 工具       |                   |
 | [MindNode](https://apps.apple.com/cn/app/mindnode-mind-map-outline/id1289197285?mt=12) | 思维导图           | 付费, 工作, 效率 | 仅使用免费版功能  |
-| [CotEdit](https://coteditor.com/)                            | 代码编辑工具       | 免费, 编程       |                   |
+| [Visual Studio](https://code.visualstudio.com/)              | 代码编辑工具       | 免费, 编程       |                   |
 | [WeChat](https://mac.weixin.qq.com)                          | 微信               | 免费, 社交       |                   |
 | [GoLand](https://www.jetbrains.com/goland/)                  | Golang 开发工具    | 付费, 工作, 编程 |                   |
 | [Chrome](https://www.google.com/intl/zh-CN/chrome/)          | 浏览器             | 免费, 工具       |                   |
