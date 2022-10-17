@@ -35,6 +35,18 @@ bash <(curl -Ls https://raw.githubusercontent.com/zhangyongcun/install/main/linu
 
 
 
+### DDNS
+
+```shell
+wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godns.sh)
+# update config token and domains
+./ddns-godns.sh
+```
+
+
+
+
+
 ## MacOS
 
 ### 软件
