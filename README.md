@@ -59,7 +59,6 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [Mos](https://github.com/Caldis/Mos)                         | 鼠标滚动优化       | 免费,开源        |                   |
 | [OpenCore Configurator](https://mackie100projects.altervista.org/opencore-configurator/) | 黑苹果工具         | 工具             |                   |
 | [Hidden Bar](https://github.com/dwarvesf/hidden)             | 系统状态栏隐藏     | 工具, 开源       |                   |
-| [Logi Options](https://www.logitech.com.cn/zh-cn/product/options) | 鼠标增强工具       | 免费, 工具, 系统 |                   |
 | [MonitorControl](https://github.com/MonitorControl/MonitorControl) | 外接显示器亮度控制 | 开源, 系统       |                   |
 | [MacZip](https://ezip.awehunt.com/?locale=zh-CN)             | zip 解压缩         | 免费, 工具, 系统 |                   |
 | [Typora](https://typora.io/)                                 | Markdown 编辑器    | 付费, 工具       | 89人民币 3 设备   |
