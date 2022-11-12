@@ -62,4 +62,4 @@ fi
 
 echo  "================Install Complete ========="
 echo "Client Config"
-echo "${HOSTNAME} = snell, ${ipc}, 7500, psk=${PSK}, obfs=tls, version=3, tfo=true"
+echo "${HOSTNAME} = snell, ${ipc}, 7500, psk=${PSK}, version=4"
