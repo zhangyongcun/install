@@ -5,7 +5,7 @@ if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
-VERSION="v4.0.0"
+VERSION="v4.0.1"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
 apt-get update
