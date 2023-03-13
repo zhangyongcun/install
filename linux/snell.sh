@@ -30,7 +30,7 @@ if [ -f ${CONF} ]; then
   echo "[snell-server]" >>${CONF}
   echo "listen = 0.0.0.0:7500" >>${CONF}
   echo "psk = ${PSK}" >>${CONF}
-  echo "obfs = tls" >>${CONF}
+  echo "obfs = http" >>${CONF}
 fi
 if [ -f ${SYSTEMD} ]; then
   echo "Found existing service..."
@@ -62,4 +62,4 @@ fi
 
 echo  "================Install Complete ========="
 echo "Client Config"
-echo "${HOSTNAME} = snell, ${ipc}, 7500, psk=${PSK}, version=4"
+echo "${HOSTNAME} = snell, ${ipc}, 7500, psk=${PSK}, obfs=http, version=4"
