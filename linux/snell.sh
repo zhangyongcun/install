@@ -55,11 +55,18 @@ else
 fi
 
 ## get ip
-ipc=$(ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1)
-if [[ "$IP" = "" ]]; then
-  ipc=$(wget -qO- -t1 -T2 ipv4.icanhazip.com)
+# 安装jq，如果尚未安装
+if ! command -v jq &> /dev/null; then
+    echo "jq 工具未安装，正在安装..."
+    apt-get install -y jq
 fi
+# 获取 IP 信息
+ip_data=$(curl -s http://ip-api.com/json)
+# 提取 ip 地址和国家简写
+ipc=$(echo "$ip_data" | jq -r '.query')
+country_code=$(echo "$ip_data" | jq -r '.countryCode')
+
 
 echo  "================Install Complete ========="
 echo "Client Config"
-echo "${HOSTNAME} = snell, ${ipc}, 7500, psk=${PSK}, obfs=http, version=4"
+echo "${country_code} = snell, ${ipc}, 7500, psk=${PSK}, obfs=http, version=4"
