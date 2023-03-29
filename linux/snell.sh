@@ -5,11 +5,34 @@ if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
+# 初始化空数组用于存储需要安装的软件包
+packages_to_install=()
+
+# 检查是否已安装 unzip
+if ! command -v unzip &> /dev/null; then
+    packages_to_install+=("unzip")
+fi
+
+# 检查是否已安装 jq
+if ! command -v jq &> /dev/null; then
+    packages_to_install+=("jq")
+fi
+
+# 检查是否已安装 wget
+if ! command -v wget &> /dev/null; then
+    packages_to_install+=("wget")
+fi
+
+# 安装所需软件包
+if [ "${#packages_to_install[@]}" -ne 0 ]; then
+    echo "正在安装以下软件包: ${packages_to_install[*]}"
+    sudo apt-get update && sudo apt-get install -y "${packages_to_install[@]}"
+else
+    echo "所有所需软件包均已安装"
+fi
 VERSION="v4.0.1"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
-apt-get update
-apt-get install unzip -y
 cd ~/
 wget --no-check-certificate -O snell.zip https://dl.nssurge.com/snell/snell-server-"$VERSION"-linux-amd64.zip
 unzip -o snell.zip
@@ -54,12 +77,6 @@ else
   systemctl start snell
 fi
 
-## get ip
-# 安装jq，如果尚未安装
-if ! command -v jq &> /dev/null; then
-    echo "jq 工具未安装，正在安装..."
-    apt-get install -y jq
-fi
 # 获取 IP 信息
 ip_data=$(curl -s http://ip-api.com/json)
 # 提取 ip 地址和国家简写
