@@ -83,6 +83,7 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [Orbstack](https://orbstack.dev/)                            | 虚拟机和 Docker 容器   | 免费，工具       |                   |
 | [CLeanShot](https://cleanshot.com/)                          | 截图工具               | 付费             |                   |
 | [KeepingYouAwake](https://keepingyouawake.app/)              | 阻止 macOS 自动休眠    | 免费,工具        |                   |
+| [KeyboardCleanTool](https://folivora.ai/keyboardcleantool)   | 临时锁定键盘所有按键   | 免费,工具        |                   |
 
 ### 	[Brew](https://brew.sh/)
 
