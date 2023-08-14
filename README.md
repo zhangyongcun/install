@@ -81,7 +81,7 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [Postman](https://www.postman.com/)                          | 模拟请求工具，辅助开发 | 编程             | 仅使用免费版功能  |
 | [Arc Broswer](https://arc.net/)                              | 浏览器                 | 免费，工具       |                   |
 | [Orbstack](https://orbstack.dev/)                            | 虚拟机和 Docker 容器   | 免费，工具       |                   |
-| [CLeanShot](https://cleanshot.com/)                          | 截图工具               | 付费             |                   |
+| [CleanShot X](https://cleanshot.com/)                          | 截图工具               | 付费             |149元/设备                   |
 | [KeepingYouAwake](https://keepingyouawake.app/)              | 阻止 macOS 自动休眠    | 免费,工具        |                   |
 | [KeyboardCleanTool](https://folivora.ai/keyboardcleantool)   | 临时锁定键盘所有按键   | 免费,工具        |                   |
 
