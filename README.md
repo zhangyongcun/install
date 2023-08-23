@@ -84,6 +84,8 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [CleanShot X](https://cleanshot.com/)                          | 截图工具               | 付费             |149元/设备                   |
 | [KeepingYouAwake](https://keepingyouawake.app/)              | 阻止 macOS 自动休眠    | 免费,工具        |                   |
 | [KeyboardCleanTool](https://folivora.ai/keyboardcleantool)   | 临时锁定键盘所有按键   | 免费,工具        |                   |
+| [沉浸式翻译](https://immersivetranslate.com/) | Chrome 插件 | 免费 | |
+| [AdBlock](https://chrome.google.com/webstore/detail/adblock-%E2%80%94-best-ad-blocker/gighmmpiobklfepjocnamgkkbiglidom?hl=zh-CN) | Chrome 插件 |  | |
 
 ### 	[Brew](https://brew.sh/)
 
@@ -103,8 +105,38 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 [ZSH](https://ohmyz.sh/)
 
 ```shell
-# install oh my zsh
+# brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/zhangyongcun/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+# oh my zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
+# zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# autojump
+brew install autojump
+# spaceship theme
+git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 ```
 
+
+
+### macOS 常规设置
+
+- 鼠标，打开辅助点按 点按右侧，在页面之间轻扫，单指左右滚动
+
+- 键盘，快捷键。修饰键，大小写修改为 Control
+
+- 关闭聚焦快捷键，使用 Hapgo
+
+- 输入法，简体拼音，关掉 纠正模糊拼音，关闭连按两下空格插入句号。
+
+- 访达，显示，显示状态栏，显示路径栏
+
+- 访达设置，关闭桌面显示外置磁盘，开启新访达窗口，打开 zhangyongcun，边栏，去掉共享
+
+- 输入法，快捷键，修改为 cmd + 空格，截屏快捷键，全部取消
+- 共享，打开远程登录、屏幕共享、文件共享，并选择用户。
+- 键盘，键重复速率延迟调至最右
+- 默认网页浏览器修改
