@@ -5,31 +5,7 @@ if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
-# 初始化空数组用于存储需要安装的软件包
-packages_to_install=()
-
-# 检查是否已安装 unzip
-if ! command -v unzip &> /dev/null; then
-    packages_to_install+=("unzip")
-fi
-
-# 检查是否已安装 jq
-if ! command -v jq &> /dev/null; then
-    packages_to_install+=("jq")
-fi
-
-# 检查是否已安装 wget
-if ! command -v wget &> /dev/null; then
-    packages_to_install+=("wget")
-fi
-
-# 安装所需软件包
-if [ "${#packages_to_install[@]}" -ne 0 ]; then
-    echo "正在安装以下软件包: ${packages_to_install[*]}"
-    sudo apt-get update && sudo apt-get install -y "${packages_to_install[@]}"
-else
-    echo "所有所需软件包均已安装"
-fi
+apt install -y unzip curl jq
 VERSION="v4.0.1"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
