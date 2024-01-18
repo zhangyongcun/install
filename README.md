@@ -53,7 +53,7 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | 软件名                                                       | 描述                   | 标签             | 价格              |
 | ------------------------------------------------------------ | ---------------------- | ---------------- | ----------------- |
 | [AppCleaner](https://freemacsoft.net/appcleaner/)            | 软件卸载               | 免费, 系统       |                   |
-| [Mos](https://github.com/Caldis/Mos)                         | 鼠标滚动优化           | 免费,开源        |                   |
+| [Mac Mouse Fix](https://macmousefix.com/)                         | 鼠标滚动优化,自定义按键功能           | 免费,开源        |                   |
 | [Hidden Bar](https://github.com/dwarvesf/hidden)             | 系统状态栏隐藏         | 工具, 开源       |                   |
 | [MonitorControl](https://github.com/MonitorControl/MonitorControl) | 外接显示器亮度控制     | 开源, 系统       |                   |
 | [MacZip](https://ezip.awehunt.com/?locale=zh-CN)             | zip 解压缩             | 免费, 工具, 系统 |                   |
