@@ -62,7 +62,6 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [Surge](https://nssurge.com/)                                | 网络工具               | 付费, 效率       | 99.99 美元 5 设备 |
 | [TablePlus](https://tableplus.com/)                          | SQL 工具               | 付费, 工作, 编程 | 仅使用免费版功能  |
 | [BaiduNetdisk](https://pan.baidu.com)                        | 网盘下载工具           | 下载             |                   |
-| [Bitwarden](https://bitwarden.com/)                          | 密码管理工具-备用        | 工具, 开源, 效率 | 私有搭建 |
 | [1Password](https://1password.com/) | 密码管理工具-主要 | 工具 | 付费 |
 | [Blackmagic Disk Speed](https://apps.apple.com/cn/app/blackmagic-disk-speed-test/id425264550?mt=12) | 硬盘测速               | 免费, 工具       |                   |
 | [Remote Desktop](https://apps.apple.com/us/app/microsoft-remote-desktop/id1295203466?mt=12) | RPC 远程桌面           | 免费, 工具       |                   |
