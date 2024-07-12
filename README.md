@@ -75,7 +75,7 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 | [IINA](https://iina.io/)                                     | 播放器                 | 工具, 开源       |                   |
 | [PyCharm](https://www.jetbrains.com/pycharm/)                | Python 开发工具        | 付费             |                   |
 | [KeyboardHolder](https://github.com/leaves615/KeyboardHolder) | 输入法自动切换         | 工具, 开源       |                   |
-| [HapiGo](https://hapigo.com/)                                | 效率工具               | 付费,工具        | 49元每年          |
+| [HapiGo](https://hapigo.com/)                                | 效率工具               | 付费,工具        | 仅使用免费版功能          |
 | [Wireguard](https://www.wireguard.com/)                      | 异地组网工具           | 开源,网络        |                   |
 | [Postman](https://www.postman.com/)                          | 模拟请求工具，辅助开发 | 编程             | 仅使用免费版功能  |
 | [Arc Broswer](https://arc.net/)                              | 浏览器                 | 免费，工具       |                   |
