@@ -15,6 +15,10 @@ bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/li
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/nps.sh)
 ```
+### duck2api
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/duck2api.sh)
+```
 
 ### Wireguard
 
