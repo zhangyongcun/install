@@ -46,7 +46,10 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 ./ddns-godns.sh
 ```
 
-
+### Ollama
+```sh
+bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wireguard.sh)
+```
 
 
 
