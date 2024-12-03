@@ -27,7 +27,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/956bf85bbac9
 ### aspera-cli
 
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ibm-aspera-cli-3.9.6.1467.159c5b1-linux-64-release.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/zhangyongcun/install/main/linux/install_aspera.sh)
 ```
 
 
