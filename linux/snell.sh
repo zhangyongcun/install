@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 apt install -y unzip curl jq
-VERSION="v4.0.1"
+VERSION="v4.1.1"
 CONF="/etc/snell/snell-server.conf"
 SYSTEMD="/etc/systemd/system/snell.service"
 cd ~/
