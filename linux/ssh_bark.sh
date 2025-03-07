@@ -80,12 +80,14 @@ fi
 
 # 检查是否已经配置了通知
 if grep -q "ssh_login_notify.sh" "$PAM_FILE"; then
-    echo -e "${YELLOW}PAM配置中已存在登录通知设置，将跳过此步骤。${NC}"
-else
-    # 添加PAM配置，使用nohup确保不阻塞登录过程
-    echo "session optional pam_exec.so seteuid /usr/local/bin/ssh_login_notify.sh" >> "$PAM_FILE"
-    echo -e "${GREEN}已成功添加PAM配置。${NC}"
+    # 删除旧的配置行
+    sed -i '/ssh_login_notify.sh/d' "$PAM_FILE"
+    echo -e "${YELLOW}已移除旧的PAM配置。${NC}"
 fi
+
+# 添加新的PAM配置，使用type=open确保只在登录时触发
+echo "session optional pam_exec.so seteuid type=open /usr/local/bin/ssh_login_notify.sh" >> "$PAM_FILE"
+echo -e "${GREEN}已成功添加PAM配置(仅登录时触发)。${NC}"
 
 # 重启SSH服务
 echo -e "${YELLOW}正在重启SSH服务...${NC}"
