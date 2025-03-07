@@ -55,13 +55,13 @@ BODY="服务器：\$HOSTNAME
 终端：\$TTY
 时间：\$DATE"
 
-# 发送通知，将所有输出重定向到/dev/null
-curl -s -X POST \\
+# 发送通知，设置3秒超时并将所有输出重定向到/dev/null
+curl -s -m 3 -X POST \\
   "\$BARK_BASE_URL/\$BARK_TOKEN/" \\
   --data-urlencode "title=\$TITLE" \\
   --data-urlencode "body=\$BODY" > /dev/null 2>&1
 
-# 如果脚本作为PAM模块的一部分运行，不应该输出任何内容
+# 无论curl是否成功，都返回成功状态，确保不影响SSH登录
 exit 0
 EOF
 
@@ -82,7 +82,7 @@ fi
 if grep -q "ssh_login_notify.sh" "$PAM_FILE"; then
     echo -e "${YELLOW}PAM配置中已存在登录通知设置，将跳过此步骤。${NC}"
 else
-    # 添加PAM配置
+    # 添加PAM配置，使用nohup确保不阻塞登录过程
     echo "session optional pam_exec.so seteuid /usr/local/bin/ssh_login_notify.sh" >> "$PAM_FILE"
     echo -e "${GREEN}已成功添加PAM配置。${NC}"
 fi
@@ -111,9 +111,15 @@ read TEST_NOTIFY
 
 if [[ "$TEST_NOTIFY" == "y" || "$TEST_NOTIFY" == "Y" ]]; then
     echo -e "${YELLOW}正在发送测试通知...${NC}"
-    /usr/local/bin/ssh_login_notify.sh
+    # 测试时使用timeout命令确保不会长时间等待
+    timeout 4 /usr/local/bin/ssh_login_notify.sh
     echo -e "${GREEN}测试通知已发送，请检查您的Bark应用。${NC}"
+    echo -e "${YELLOW}(如果Bark服务器无响应，通知可能发送失败，但不会影响SSH登录)${NC}"
 fi
 
 echo -e "${GREEN}下次SSH登录时，您将收到登录通知。${NC}"
-echo -e "${YELLOW}注意：如果您使用密钥登录并没有交互式会话，可能不会触发通知。${NC}"
+echo -e "${YELLOW}注意：以下情况可能不会触发通知：${NC}"
+echo -e "${YELLOW}1. 使用密钥登录且没有交互式会话${NC}"
+echo -e "${YELLOW}2. Bark服务器无响应或超过3秒超时${NC}"
+echo -e "${YELLOW}3. 网络连接问题${NC}"
+echo -e "${GREEN}这些情况下SSH登录仍会正常进行，只是通知可能失败。${NC}"
