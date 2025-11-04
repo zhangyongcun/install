@@ -45,6 +45,11 @@ wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ddns-godn
 bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/ollama.sh)
 ```
 
+### WireGuard Easy
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wg-easy-setup.sh)
+```
+
 
 
 ## MacOS
