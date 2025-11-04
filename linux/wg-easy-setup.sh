@@ -189,6 +189,82 @@ if docker ps -a --format '{{.Names}}' | grep -q '^wg-easy$'; then
     fi
 fi
 
+# Pull latest wg-easy image
+echo -e "${YELLOW}Pulling latest wg-easy Docker image...${NC}"
+if docker pull ghcr.io/wg-easy/wg-easy:latest; then
+    echo -e "${GREEN}✓ Successfully pulled latest wg-easy image${NC}\n"
+else
+    echo -e "${RED}✗ Failed to pull Docker image!${NC}"
+    echo -e "${YELLOW}Please check your network connection and try again.${NC}"
+    exit 1
+fi
+
+# Save configuration to file
+CONFIG_FILE="./wg-easy-config-$(date +%Y%m%d-%H%M%S).txt"
+echo -e "${YELLOW}Saving configuration to file...${NC}"
+
+cat > "$CONFIG_FILE" <<EOF
+# WireGuard Easy Configuration
+# Generated: $(date '+%Y-%m-%d %H:%M:%S')
+# ═══════════════════════════════════════════════════════════
+
+## Configuration Summary
+Docker Image:         ghcr.io/wg-easy/wg-easy:latest
+WG_HOST:              ${WG_HOST}
+WG_PORT:              ${WG_PORT}
+Web UI Port:          ${WEB_PORT}
+WG_DEFAULT_ADDRESS:   ${WG_DEFAULT_ADDRESS}
+WG_ALLOWED_IPS:       ${WG_ALLOWED_IPS}
+WG_DEFAULT_DNS:       ${WG_DEFAULT_DNS}
+Web Password:         ${WEB_PASSWORD}
+Password Hash:        ${PASSWORD_HASH}
+
+## Access Information
+Management URL:       http://${WG_HOST}:${WEB_PORT}
+Login Password:       ${WEB_PASSWORD}
+
+## Docker Run Command
+docker run -d \\
+  --name=wg-easy \\
+  -e "WG_HOST=${WG_HOST}" \\
+  -e "LANG=cn" \\
+  -e "WG_PORT=${WG_PORT}" \\
+  -e "PASSWORD_HASH=${PASSWORD_HASH}" \\
+  -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \\
+  -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \\
+  -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \\
+  -v ~/.wg-easy:/etc/wireguard \\
+  -p "${WG_PORT}:${WG_PORT}/udp" \\
+  -p "${WEB_PORT}:51821/tcp" \\
+  --cap-add=NET_ADMIN \\
+  --cap-add=SYS_MODULE \\
+  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \\
+  --sysctl="net.ipv4.ip_forward=1" \\
+  --restart unless-stopped \\
+  ghcr.io/wg-easy/wg-easy:latest
+
+## Useful Commands
+# View logs
+docker logs -f wg-easy
+
+# Stop container
+docker stop wg-easy
+
+# Start container
+docker start wg-easy
+
+# Restart container
+docker restart wg-easy
+
+# Remove container
+docker rm -f wg-easy
+
+# Recreate container with same configuration
+# First remove the old container, then run the docker run command above
+EOF
+
+echo -e "${GREEN}✓ Configuration saved to: ${CONFIG_FILE}${NC}\n"
+
 # Execute docker run
 echo -e "${YELLOW}Executing Docker command...${NC}\n"
 
@@ -214,7 +290,7 @@ docker run -d \\
   --sysctl="net.ipv4.conf.all.src_valid_mark=1" \\
   --sysctl="net.ipv4.ip_forward=1" \\
   --restart unless-stopped \\
-  ghcr.io/wg-easy/wg-easy
+  ghcr.io/wg-easy/wg-easy:latest
 EOF
 echo -e "${BLUE}═══════════════════════════════════════════${NC}\n"
 
@@ -236,7 +312,7 @@ docker run -d \
   --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
   --sysctl="net.ipv4.ip_forward=1" \
   --restart unless-stopped \
-  ghcr.io/wg-easy/wg-easy
+  ghcr.io/wg-easy/wg-easy:latest
 
 # Check if container started successfully
 echo -e "${YELLOW}Waiting for container to start...${NC}"
@@ -279,6 +355,10 @@ if docker ps --filter "name=wg-easy" --format '{{.Names}}' | grep -q '^wg-easy$'
     echo -e "  Start:         ${GREEN}docker start wg-easy${NC}"
     echo -e "  Restart:       ${GREEN}docker restart wg-easy${NC}"
     echo -e "  Remove:        ${GREEN}docker rm -f wg-easy${NC}"
+    echo ""
+    echo -e "${YELLOW}Configuration file:${NC}"
+    echo -e "  ${GREEN}${CONFIG_FILE}${NC}"
+    echo -e "  This file contains all configuration details and the docker run command"
     echo ""
 else
     echo -e "${RED}✗ Failed to start container!${NC}"
