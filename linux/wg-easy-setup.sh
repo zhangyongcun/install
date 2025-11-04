@@ -70,9 +70,14 @@ generate_password() {
 # Function to generate bcrypt hash
 generate_password_hash() {
     local password="$1"
-    # Use docker to run a temporary container with bcrypt
-    docker run --rm -i ghcr.io/wg-easy/wg-easy wgpw "$password" 2>/dev/null || echo ""
+    # Use official method from wg-easy documentation
+    # wgpw outputs: PASSWORD_HASH='$2a$12$...'
+    # We need to extract just the hash value between the quotes
+    local output=$(docker run --rm ghcr.io/wg-easy/wg-easy wgpw "$password" 2>/dev/null)
+    # Extract the hash value between single quotes
+    echo "$output" | sed "s/PASSWORD_HASH='\(.*\)'/\1/" | tr -d '[:space:]'
 }
+
 
 echo -e "${BLUE}═══════════════════════════════════════════${NC}"
 echo -e "${BLUE}       Basic Configuration                ${NC}"
@@ -127,17 +132,19 @@ echo "Set a password for the web management interface"
 read_with_default "Password" "$random_password" WEB_PASSWORD
 echo ""
 
-# Generate password hash
+# Generate password hash (required by wg-easy v14+)
 echo -e "${YELLOW}Generating password hash...${NC}"
 PASSWORD_HASH=$(generate_password_hash "$WEB_PASSWORD")
 
 if [ -z "$PASSWORD_HASH" ]; then
-    echo -e "${RED}Failed to generate password hash. Will use PASSWORD instead.${NC}"
-    USE_PASSWORD_HASH=false
-else
-    echo -e "${GREEN}✓ Password hash generated${NC}"
-    USE_PASSWORD_HASH=true
+    echo -e "${RED}✗ Failed to generate password hash!${NC}"
+    echo -e "${YELLOW}This usually means the wg-easy Docker image cannot be pulled.${NC}"
+    echo -e "${YELLOW}Please check your network connection and try again.${NC}"
+    exit 1
 fi
+
+echo -e "${GREEN}✓ Password hash generated successfully${NC}"
+echo -e "${BLUE}Hash: ${PASSWORD_HASH}${NC}"
 echo ""
 
 # Summary
@@ -185,54 +192,70 @@ fi
 # Execute docker run
 echo -e "${YELLOW}Executing Docker command...${NC}\n"
 
-# Build docker run command using array to properly handle special characters
-if [ "$USE_PASSWORD_HASH" = true ]; then
-    docker run -d \
-      --name=wg-easy \
-      -e "WG_HOST=${WG_HOST}" \
-      -e "LANG=cn" \
-      -e "WG_PORT=${WG_PORT}" \
-      -e "PASSWORD_HASH=${PASSWORD_HASH}" \
-      -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \
-      -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \
-      -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \
-      -v ~/.wg-easy:/etc/wireguard \
-      -p "${WG_PORT}:${WG_PORT}/udp" \
-      -p "${WEB_PORT}:51821/tcp" \
-      --cap-add=NET_ADMIN \
-      --cap-add=SYS_MODULE \
-      --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-      --sysctl="net.ipv4.ip_forward=1" \
-      --restart unless-stopped \
-      ghcr.io/wg-easy/wg-easy
-else
-    docker run -d \
-      --name=wg-easy \
-      -e "WG_HOST=${WG_HOST}" \
-      -e "LANG=cn" \
-      -e "WG_PORT=${WG_PORT}" \
-      -e "PASSWORD=${WEB_PASSWORD}" \
-      -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \
-      -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \
-      -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \
-      -v ~/.wg-easy:/etc/wireguard \
-      -p "${WG_PORT}:${WG_PORT}/udp" \
-      -p "${WEB_PORT}:51821/tcp" \
-      --cap-add=NET_ADMIN \
-      --cap-add=SYS_MODULE \
-      --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-      --sysctl="net.ipv4.ip_forward=1" \
-      --restart unless-stopped \
-      ghcr.io/wg-easy/wg-easy
-fi
+# Print the docker run command for debugging
+echo -e "${BLUE}═══════════════════════════════════════════${NC}"
+echo -e "${BLUE}       Docker Run Command (for debugging)  ${NC}"
+echo -e "${BLUE}═══════════════════════════════════════════${NC}"
+cat <<EOF
+docker run -d \\
+  --name=wg-easy \\
+  -e "WG_HOST=${WG_HOST}" \\
+  -e "LANG=cn" \\
+  -e "WG_PORT=${WG_PORT}" \\
+  -e "PASSWORD_HASH=${PASSWORD_HASH}" \\
+  -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \\
+  -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \\
+  -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \\
+  -v ~/.wg-easy:/etc/wireguard \\
+  -p "${WG_PORT}:${WG_PORT}/udp" \\
+  -p "${WEB_PORT}:51821/tcp" \\
+  --cap-add=NET_ADMIN \\
+  --cap-add=SYS_MODULE \\
+  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \\
+  --sysctl="net.ipv4.ip_forward=1" \\
+  --restart unless-stopped \\
+  ghcr.io/wg-easy/wg-easy
+EOF
+echo -e "${BLUE}═══════════════════════════════════════════${NC}\n"
+
+# Execute the command
+docker run -d \
+  --name=wg-easy \
+  -e "WG_HOST=${WG_HOST}" \
+  -e "LANG=cn" \
+  -e "WG_PORT=${WG_PORT}" \
+  -e "PASSWORD_HASH=${PASSWORD_HASH}" \
+  -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \
+  -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \
+  -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \
+  -v ~/.wg-easy:/etc/wireguard \
+  -p "${WG_PORT}:${WG_PORT}/udp" \
+  -p "${WEB_PORT}:51821/tcp" \
+  --cap-add=NET_ADMIN \
+  --cap-add=SYS_MODULE \
+  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+  --sysctl="net.ipv4.ip_forward=1" \
+  --restart unless-stopped \
+  ghcr.io/wg-easy/wg-easy
 
 # Check if container started successfully
-sleep 3
+echo -e "${YELLOW}Waiting for container to start...${NC}"
+sleep 5
+
 if docker ps --filter "name=wg-easy" --format '{{.Names}}' | grep -q '^wg-easy$'; then
     echo ""
     echo -e "${GREEN}╔════════════════════════════════════════════╗${NC}"
     echo -e "${GREEN}║     ✓ WireGuard Easy Started Successfully ║${NC}"
     echo -e "${GREEN}╚════════════════════════════════════════════╝${NC}"
+
+    # Check for any errors in logs
+    echo -e "\n${YELLOW}Checking container logs for errors...${NC}"
+    sleep 2
+    if docker logs wg-easy 2>&1 | grep -i "error\|fail" | head -5; then
+        echo -e "${YELLOW}⚠ Some errors detected in logs. Container may still be functional.${NC}"
+    else
+        echo -e "${GREEN}✓ No errors detected in logs${NC}"
+    fi
     echo ""
     echo -e "${BLUE}═══════════════════════════════════════════${NC}"
     echo -e "${BLUE}       Access Information                   ${NC}"
@@ -251,11 +274,11 @@ if docker ps --filter "name=wg-easy" --format '{{.Names}}' | grep -q '^wg-easy$'
     echo "4. Download and import configs to your devices"
     echo ""
     echo -e "${YELLOW}Useful commands:${NC}"
-    echo "  View logs:     ${GREEN}docker logs -f wg-easy${NC}"
-    echo "  Stop:          ${GREEN}docker stop wg-easy${NC}"
-    echo "  Start:         ${GREEN}docker start wg-easy${NC}"
-    echo "  Restart:       ${GREEN}docker restart wg-easy${NC}"
-    echo "  Remove:        ${GREEN}docker rm -f wg-easy${NC}"
+    echo -e "  View logs:     ${GREEN}docker logs -f wg-easy${NC}"
+    echo -e "  Stop:          ${GREEN}docker stop wg-easy${NC}"
+    echo -e "  Start:         ${GREEN}docker start wg-easy${NC}"
+    echo -e "  Restart:       ${GREEN}docker restart wg-easy${NC}"
+    echo -e "  Remove:        ${GREEN}docker rm -f wg-easy${NC}"
     echo ""
 else
     echo -e "${RED}✗ Failed to start container!${NC}"
