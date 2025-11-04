@@ -182,38 +182,49 @@ if docker ps -a --format '{{.Names}}' | grep -q '^wg-easy$'; then
     fi
 fi
 
-# Build docker run command
-DOCKER_CMD="docker run -d \\
-  --name=wg-easy \\
-  -e WG_HOST=${WG_HOST} \\
-  -e LANG=cn \\
-  -e WG_PORT=${WG_PORT} \\"
-
-if [ "$USE_PASSWORD_HASH" = true ]; then
-    DOCKER_CMD="${DOCKER_CMD}
-  -e PASSWORD_HASH='${PASSWORD_HASH}' \\"
-else
-    DOCKER_CMD="${DOCKER_CMD}
-  -e PASSWORD='${WEB_PASSWORD}' \\"
-fi
-
-DOCKER_CMD="${DOCKER_CMD}
-  -e WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS} \\
-  -e WG_DEFAULT_DNS=${WG_DEFAULT_DNS} \\
-  -e WG_ALLOWED_IPS=${WG_ALLOWED_IPS} \\
-  -v ~/.wg-easy:/etc/wireguard \\
-  -p ${WG_PORT}:${WG_PORT}/udp \\
-  -p ${WEB_PORT}:51821/tcp \\
-  --cap-add=NET_ADMIN \\
-  --cap-add=SYS_MODULE \\
-  --sysctl=\"net.ipv4.conf.all.src_valid_mark=1\" \\
-  --sysctl=\"net.ipv4.ip_forward=1\" \\
-  --restart unless-stopped \\
-  ghcr.io/wg-easy/wg-easy"
-
 # Execute docker run
 echo -e "${YELLOW}Executing Docker command...${NC}\n"
-eval $DOCKER_CMD
+
+# Build docker run command using array to properly handle special characters
+if [ "$USE_PASSWORD_HASH" = true ]; then
+    docker run -d \
+      --name=wg-easy \
+      -e "WG_HOST=${WG_HOST}" \
+      -e "LANG=cn" \
+      -e "WG_PORT=${WG_PORT}" \
+      -e "PASSWORD_HASH=${PASSWORD_HASH}" \
+      -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \
+      -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \
+      -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \
+      -v ~/.wg-easy:/etc/wireguard \
+      -p "${WG_PORT}:${WG_PORT}/udp" \
+      -p "${WEB_PORT}:51821/tcp" \
+      --cap-add=NET_ADMIN \
+      --cap-add=SYS_MODULE \
+      --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+      --sysctl="net.ipv4.ip_forward=1" \
+      --restart unless-stopped \
+      ghcr.io/wg-easy/wg-easy
+else
+    docker run -d \
+      --name=wg-easy \
+      -e "WG_HOST=${WG_HOST}" \
+      -e "LANG=cn" \
+      -e "WG_PORT=${WG_PORT}" \
+      -e "PASSWORD=${WEB_PASSWORD}" \
+      -e "WG_DEFAULT_ADDRESS=${WG_DEFAULT_ADDRESS}" \
+      -e "WG_DEFAULT_DNS=${WG_DEFAULT_DNS}" \
+      -e "WG_ALLOWED_IPS=${WG_ALLOWED_IPS}" \
+      -v ~/.wg-easy:/etc/wireguard \
+      -p "${WG_PORT}:${WG_PORT}/udp" \
+      -p "${WEB_PORT}:51821/tcp" \
+      --cap-add=NET_ADMIN \
+      --cap-add=SYS_MODULE \
+      --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+      --sysctl="net.ipv4.ip_forward=1" \
+      --restart unless-stopped \
+      ghcr.io/wg-easy/wg-easy
+fi
 
 # Check if container started successfully
 sleep 3
