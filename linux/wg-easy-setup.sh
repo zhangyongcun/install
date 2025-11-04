@@ -189,6 +189,38 @@ if docker ps -a --format '{{.Names}}' | grep -q '^wg-easy$'; then
     fi
 fi
 
+# Check and backup existing .wg-easy directory
+WG_EASY_DIR="$HOME/.wg-easy"
+if [ -d "$WG_EASY_DIR" ]; then
+    echo -e "${YELLOW}Found existing WireGuard configuration directory: ${WG_EASY_DIR}${NC}"
+    BACKUP_DIR="$HOME/.wg-easy-backup-$(date +%Y%m%d-%H%M%S)"
+
+    read -p "$(echo -e ${YELLOW}Do you want to backup and remove it? This ensures a clean setup. [Y/n]: ${NC})" backup_confirm
+    backup_confirm=${backup_confirm:-Y}
+
+    if [[ $backup_confirm =~ ^[Yy]$ ]]; then
+        echo -e "${YELLOW}Backing up to: ${BACKUP_DIR}${NC}"
+        if cp -r "$WG_EASY_DIR" "$BACKUP_DIR"; then
+            echo -e "${GREEN}✓ Backup completed successfully${NC}"
+            echo -e "${YELLOW}Removing old configuration directory...${NC}"
+            if rm -rf "$WG_EASY_DIR"; then
+                echo -e "${GREEN}✓ Old configuration removed${NC}\n"
+            else
+                echo -e "${RED}✗ Failed to remove old configuration!${NC}"
+                echo -e "${YELLOW}Please remove it manually: sudo rm -rf ${WG_EASY_DIR}${NC}"
+                exit 1
+            fi
+        else
+            echo -e "${RED}✗ Failed to backup!${NC}"
+            echo -e "${YELLOW}Aborting to prevent data loss.${NC}"
+            exit 1
+        fi
+    else
+        echo -e "${YELLOW}⚠ Keeping existing configuration. This may cause conflicts.${NC}"
+        echo -e "${YELLOW}⚠ If you encounter issues, manually remove: ${WG_EASY_DIR}${NC}\n"
+    fi
+fi
+
 # Pull latest wg-easy image
 echo -e "${YELLOW}Pulling latest wg-easy Docker image...${NC}"
 if docker pull ghcr.io/wg-easy/wg-easy:latest; then
@@ -203,6 +235,13 @@ fi
 CONFIG_FILE="./wg-easy-config-$(date +%Y%m%d-%H%M%S).txt"
 echo -e "${YELLOW}Saving configuration to file...${NC}"
 
+# Prepare backup info for config file
+if [ -n "$BACKUP_DIR" ] && [ -d "$BACKUP_DIR" ]; then
+    BACKUP_INFO="Previous config backed up to: ${BACKUP_DIR}"
+else
+    BACKUP_INFO="No previous configuration found"
+fi
+
 cat > "$CONFIG_FILE" <<EOF
 # WireGuard Easy Configuration
 # Generated: $(date '+%Y-%m-%d %H:%M:%S')
@@ -210,6 +249,7 @@ cat > "$CONFIG_FILE" <<EOF
 
 ## Configuration Summary
 Docker Image:         ghcr.io/wg-easy/wg-easy:latest
+Backup Status:        ${BACKUP_INFO}
 WG_HOST:              ${WG_HOST}
 WG_PORT:              ${WG_PORT}
 Web UI Port:          ${WEB_PORT}
@@ -360,6 +400,12 @@ if docker ps --filter "name=wg-easy" --format '{{.Names}}' | grep -q '^wg-easy$'
     echo -e "  ${GREEN}${CONFIG_FILE}${NC}"
     echo -e "  This file contains all configuration details and the docker run command"
     echo ""
+    if [ -n "$BACKUP_DIR" ] && [ -d "$BACKUP_DIR" ]; then
+        echo -e "${YELLOW}Previous configuration backup:${NC}"
+        echo -e "  ${GREEN}${BACKUP_DIR}${NC}"
+        echo -e "  You can restore it if needed: mv ${BACKUP_DIR} ${WG_EASY_DIR}"
+        echo ""
+    fi
 else
     echo -e "${RED}✗ Failed to start container!${NC}"
     echo -e "${YELLOW}Check logs with: docker logs wg-easy${NC}"
