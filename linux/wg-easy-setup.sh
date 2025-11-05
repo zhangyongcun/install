@@ -24,10 +24,13 @@ echo -e "${NC}"
 echo -e "${YELLOW}[1/8] Checking Docker installation...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${RED}✗ Docker is not installed!${NC}"
-    echo -e "${YELLOW}Please install Docker first:${NC}"
-    echo "  - macOS: https://docs.docker.com/desktop/install/mac-install/"
-    echo "  - Linux: https://docs.docker.com/engine/install/"
-    echo "  - Windows: https://docs.docker.com/desktop/install/windows-install/"
+    echo -e "${YELLOW}Please install Docker first with the following command:${NC}"
+    echo ""
+    echo -e "  ${GREEN}curl -sS https://get.docker.com/ | sh${NC}"
+    echo ""
+    echo -e "${YELLOW}After installation, you may need to start Docker service:${NC}"
+    echo -e "  ${GREEN}sudo systemctl start docker${NC}"
+    echo -e "  ${GREEN}sudo systemctl enable docker${NC}"
     exit 1
 fi
 
