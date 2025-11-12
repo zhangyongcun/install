@@ -47,7 +47,7 @@ bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/li
 
 ### WireGuard Easy
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wg-easy-setup.sh)
+wget https://raw.githubusercontent.com/zhangyongcun/install/main/linux/wireguard.sh
 ```
 
 
